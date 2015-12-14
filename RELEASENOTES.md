@@ -2,6 +2,14 @@
 
 ---
 
+##  Version 5.1.4 - 2015-12-14
+
+### Fixes
+* Added a guard for indicatorsMap
+
+
+---
+
 ##  Version 5.1.1 - 2014.01.10
 
 ### Fixes
