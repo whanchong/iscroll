@@ -1,4 +1,4 @@
-/*! iScroll v5.1.3 ~ (c) 2008-2015 Matteo Spinelli ~ http://cubiq.org/license */
+/*! iScroll v5.1.4 ~ (c) 2008-2015 Matteo Spinelli ~ http://cubiq.org/license */
 (function (window, document, Math) {
 var rAF = window.requestAnimationFrame	||
 	window.webkitRequestAnimationFrame	||
@@ -337,7 +337,7 @@ function IScroll (el, options) {
 }
 
 IScroll.prototype = {
-	version: '5.1.3',
+	version: '5.1.4',
 
 	_init: function () {
 		this._initEvents();
@@ -974,8 +974,9 @@ IScroll.prototype = {
 
 		// TODO: check if we can use array.map (wide compatibility and performance issues)
 		function _indicatorsMap (fn) {
-			for ( var i = that.indicators.length; i--; ) {
-				fn.call(that.indicators[i]);
+			var indicators = that.indicators || [];
+			for ( var i = indicators.length; i--; ) {
+				fn.call(indicators[i]);
 			}
 		}
 
