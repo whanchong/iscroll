@@ -42,7 +42,7 @@
 				this._key(e);
 				break;
 			case 'click':
-				if ( !e._constructed ) {
+				if ( !e._constructed || this.options.clickPreventDefault ) {
 					e.preventDefault();
 					e.stopPropagation();
 				}
