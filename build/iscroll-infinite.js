@@ -1,4 +1,4 @@
-/*! iScroll v5.1.4 ~ (c) 2008-2015 Matteo Spinelli ~ http://cubiq.org/license */
+/*! iScroll v5.1.5 ~ (c) 2008-2016 Matteo Spinelli ~ http://cubiq.org/license */
 (function (window, document, Math) {
 var rAF = window.requestAnimationFrame	||
 	window.webkitRequestAnimationFrame	||
@@ -48,7 +48,7 @@ var utils = (function () {
 	};
 
 	me.prefixPointerEvent = function (pointerEvent) {
-		return window.MSPointerEvent ? 
+		return window.MSPointerEvent ?
 			'MSPointer' + pointerEvent.charAt(9).toUpperCase() + pointerEvent.substr(10):
 			pointerEvent;
 	};
@@ -259,7 +259,7 @@ function IScroll (el, options) {
 		infiniteUseTransform: true,
 		deceleration: 0.004,
 
-// INSERT POINT: OPTIONS 
+// INSERT POINT: OPTIONS
 
 		startX: 0,
 		startY: 0,
@@ -320,7 +320,7 @@ function IScroll (el, options) {
 
 // INSERT POINT: NORMALIZATION
 
-	// Some defaults	
+	// Some defaults
 	this.x = 0;
 	this.y = 0;
 	this.directionX = 0;
@@ -337,7 +337,7 @@ function IScroll (el, options) {
 }
 
 IScroll.prototype = {
-	version: '5.1.4',
+	version: '5.1.5',
 
 	_init: function () {
 		this._initEvents();
@@ -611,6 +611,7 @@ IScroll.prototype = {
 			easing = this.options.bounceEasing;
 		}
 
+
 // INSERT POINT: _end
 
 		if ( newX != this.x || newY != this.y ) {
@@ -682,7 +683,7 @@ IScroll.prototype = {
 		this.scrollerHeight	= this.scroller.offsetHeight;
 
 		this.maxScrollX		= this.wrapperWidth - this.scrollerWidth;
-		
+
 		var limit;
 		if ( this.options.infiniteElements ) {
 			this.options.infiniteLimit = this.options.infiniteLimit || Math.floor(2147483645 / this.infiniteElementHeight);
@@ -858,7 +859,7 @@ IScroll.prototype = {
 		eventType(window, 'orientationchange', this);
 		eventType(window, 'resize', this);
 
-		if ( this.options.click ) {
+		if ( this.options.click || this.options.clickPreventDefault ) {
 			eventType(this.wrapper, 'click', this, true);
 		}
 
@@ -1406,7 +1407,7 @@ IScroll.prototype = {
 			if ( now >= destTime ) {
 				that.isAnimating = false;
 				that._translate(destX, destY);
-				
+
 				if ( !that.resetPosition(that.options.bounceTime) ) {
 					that._execEvent('scrollEnd');
 				}
@@ -1574,7 +1575,7 @@ IScroll.prototype = {
 				this._key(e);
 				break;
 			case 'click':
-				if ( !e._constructed ) {
+				if ( !e._constructed || this.options.clickPreventDefault ) {
 					e.preventDefault();
 					e.stopPropagation();
 				}
@@ -1582,6 +1583,7 @@ IScroll.prototype = {
 		}
 	}
 };
+
 IScroll.utils = utils;
 
 if ( typeof module != 'undefined' && module.exports ) {

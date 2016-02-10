@@ -71,7 +71,7 @@ var releases = {
 var args = process.argv.slice(2);
 
 if ( !args.length ) {
-	args = ['iscroll'];
+	args = ['dist'];
 }
 
 if ( args[0] == 'dist' ) {
@@ -114,7 +114,7 @@ function build (release) {
 
 			// Insert point
 			for ( var i in postProcessing.insert ) {
-				value = postProcessing.insert[i].substr(postProcessing.insert[i].length-3) == '.js' ? 
+				value = postProcessing.insert[i].substr(postProcessing.insert[i].length-3) == '.js' ?
 					fs.readFileSync('src/' + postProcessing.insert[i]) :
 					postProcessing.insert[i];
 

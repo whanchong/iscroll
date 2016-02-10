@@ -1,4 +1,4 @@
-/*! iScroll v5.1.4 ~ (c) 2008-2015 Matteo Spinelli ~ http://cubiq.org/license */
+/*! iScroll v5.1.5 ~ (c) 2008-2016 Matteo Spinelli ~ http://cubiq.org/license */
 (function (window, document, Math) {
 var rAF = window.requestAnimationFrame	||
 	window.webkitRequestAnimationFrame	||
@@ -48,7 +48,7 @@ var utils = (function () {
 	};
 
 	me.prefixPointerEvent = function (pointerEvent) {
-		return window.MSPointerEvent ? 
+		return window.MSPointerEvent ?
 			'MSPointer' + pointerEvent.charAt(9).toUpperCase() + pointerEvent.substr(10):
 			pointerEvent;
 	};
@@ -258,7 +258,7 @@ function IScroll (el, options) {
 
 		snapThreshold: 0.334,
 
-// INSERT POINT: OPTIONS 
+// INSERT POINT: OPTIONS
 
 		startX: 0,
 		startY: 0,
@@ -318,7 +318,7 @@ function IScroll (el, options) {
 
 // INSERT POINT: NORMALIZATION
 
-	// Some defaults	
+	// Some defaults
 	this.x = 0;
 	this.y = 0;
 	this.directionX = 0;
@@ -335,7 +335,7 @@ function IScroll (el, options) {
 }
 
 IScroll.prototype = {
-	version: '5.1.4',
+	version: '5.1.5',
 
 	_init: function () {
 		this._initEvents();
@@ -609,6 +609,7 @@ IScroll.prototype = {
 			easing = this.options.bounceEasing;
 		}
 
+
 // INSERT POINT: _end
 
 		if ( newX != this.x || newY != this.y ) {
@@ -876,7 +877,7 @@ IScroll.prototype = {
 		eventType(window, 'orientationchange', this);
 		eventType(window, 'resize', this);
 
-		if ( this.options.click ) {
+		if ( this.options.click || this.options.clickPreventDefault ) {
 			eventType(this.wrapper, 'click', this, true);
 		}
 
@@ -1529,7 +1530,7 @@ IScroll.prototype = {
 			if ( now >= destTime ) {
 				that.isAnimating = false;
 				that._translate(destX, destY);
-				
+
 				if ( !that.resetPosition(that.options.bounceTime) ) {
 					that._execEvent('scrollEnd');
 				}
@@ -1599,7 +1600,7 @@ IScroll.prototype = {
 				this._key(e);
 				break;
 			case 'click':
-				if ( !e._constructed ) {
+				if ( !e._constructed || this.options.clickPreventDefault ) {
 					e.preventDefault();
 					e.stopPropagation();
 				}
@@ -1607,6 +1608,7 @@ IScroll.prototype = {
 		}
 	}
 };
+
 function createDefaultScrollbar (direction, interactive, type) {
 	var scrollbar = document.createElement('div'),
 		indicator = document.createElement('div');
@@ -1912,7 +1914,7 @@ Indicator.prototype = {
 				this.maxBoundaryX = this.maxPosX;
 			}
 
-			this.sizeRatioX = this.options.speedRatioX || (this.scroller.maxScrollX && (this.maxPosX / this.scroller.maxScrollX));	
+			this.sizeRatioX = this.options.speedRatioX || (this.scroller.maxScrollX && (this.maxPosX / this.scroller.maxScrollX));
 		}
 
 		if ( this.options.listenY ) {

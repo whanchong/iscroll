@@ -2,6 +2,16 @@
 
 ---
 
+## Version 5.1.5 - 2016-02-10
+
+### Fixes
+* Changed default build to `dist` instead of `iscroll`
+
+### New features
+* Added `options.clickPreventDefault` to avoid clicks leaking through when scrolling.
+
+---
+
 ##  Version 5.1.4 - 2015-12-14
 
 ### Fixes

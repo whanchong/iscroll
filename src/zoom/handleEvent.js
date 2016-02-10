@@ -50,7 +50,7 @@
 			case 'mousewheel':
 				if ( this.options.wheelAction == 'zoom' ) {
 					this._wheelZoom(e);
-					return;	
+					return;
 				}
 				this._wheel(e);
 				break;

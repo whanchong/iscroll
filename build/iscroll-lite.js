@@ -1,4 +1,4 @@
-/*! iScroll v5.1.4 ~ (c) 2008-2015 Matteo Spinelli ~ http://cubiq.org/license */
+/*! iScroll v5.1.5 ~ (c) 2008-2016 Matteo Spinelli ~ http://cubiq.org/license */
 (function (window, document, Math) {
 var rAF = window.requestAnimationFrame	||
 	window.webkitRequestAnimationFrame	||
@@ -48,7 +48,7 @@ var utils = (function () {
 	};
 
 	me.prefixPointerEvent = function (pointerEvent) {
-		return window.MSPointerEvent ? 
+		return window.MSPointerEvent ?
 			'MSPointer' + pointerEvent.charAt(9).toUpperCase() + pointerEvent.substr(10):
 			pointerEvent;
 	};
@@ -252,7 +252,7 @@ function IScroll (el, options) {
 
 	this.options = {
 
-// INSERT POINT: OPTIONS 
+// INSERT POINT: OPTIONS
 
 		startX: 0,
 		startY: 0,
@@ -303,7 +303,7 @@ function IScroll (el, options) {
 
 // INSERT POINT: NORMALIZATION
 
-	// Some defaults	
+	// Some defaults
 	this.x = 0;
 	this.y = 0;
 	this.directionX = 0;
@@ -320,7 +320,7 @@ function IScroll (el, options) {
 }
 
 IScroll.prototype = {
-	version: '5.1.4',
+	version: '5.1.5',
 
 	_init: function () {
 		this._initEvents();
@@ -798,7 +798,7 @@ IScroll.prototype = {
 		eventType(window, 'orientationchange', this);
 		eventType(window, 'resize', this);
 
-		if ( this.options.click ) {
+		if ( this.options.click || this.options.clickPreventDefault ) {
 			eventType(this.wrapper, 'click', this, true);
 		}
 
@@ -882,6 +882,7 @@ IScroll.prototype = {
 		this.isAnimating = true;
 		step();
 	},
+
 	handleEvent: function (e) {
 		switch ( e.type ) {
 			case 'touchstart':
@@ -925,7 +926,7 @@ IScroll.prototype = {
 				this._key(e);
 				break;
 			case 'click':
-				if ( !e._constructed ) {
+				if ( !e._constructed || this.options.clickPreventDefault ) {
 					e.preventDefault();
 					e.stopPropagation();
 				}
@@ -933,6 +934,7 @@ IScroll.prototype = {
 		}
 	}
 };
+
 IScroll.utils = utils;
 
 if ( typeof module != 'undefined' && module.exports ) {
