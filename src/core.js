@@ -286,10 +286,6 @@ IScroll.prototype = {
 				utils.tap(e, this.options.tap);
 			}
 
-			if ( this.options.click ) {
-				utils.click(e);
-			}
-
 			this._execEvent('scrollCancel');
 			return;
 		}
@@ -552,9 +548,7 @@ IScroll.prototype = {
 		eventType(window, 'orientationchange', this);
 		eventType(window, 'resize', this);
 
-		if ( this.options.click || this.options.clickPreventDefault ) {
-			eventType(this.wrapper, 'click', this, true);
-		}
+		eventType(this.wrapper, 'click', this, true);
 
 		if ( !this.options.disableMouse ) {
 			eventType(this.wrapper, 'mousedown', this);
