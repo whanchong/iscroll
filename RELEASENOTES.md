@@ -2,6 +2,15 @@
 
 ---
 
+## Version 5.2.0 - 2016-02-23
+
+### Fixes
+* Unified click handling, always listen to click, prevent on tap.
+* Removed `options.clickPreventDefault`
+
+
+---
+
 ## Version 5.1.5 - 2016-02-10
 
 ### Fixes

@@ -1,4 +1,4 @@
-/*! iScroll v5.1.5 ~ (c) 2008-2016 Matteo Spinelli ~ http://cubiq.org/license */
+/*! iScroll v5.2.0 ~ (c) 2008-2016 Matteo Spinelli ~ http://cubiq.org/license */
 (function (window, document, Math) {
 var rAF = window.requestAnimationFrame	||
 	window.webkitRequestAnimationFrame	||
@@ -226,11 +226,11 @@ var utils = (function () {
 		e.target.dispatchEvent(ev);
 	};
 
-	me.click = function (e) {
+	me.click = function (e, options) {
 		var target = e.target,
 			ev;
 
-		if ( !(/(SELECT|INPUT|TEXTAREA)/i).test(target.tagName) ) {
+		if ( !me.preventDefaultException(target, options.preventDefaultException) ) {
 			ev = document.createEvent('MouseEvents');
 			ev.initMouseEvent('click', true, true, e.view, 1,
 				target.screenX, target.screenY, target.clientX, target.clientY,
@@ -320,7 +320,7 @@ function IScroll (el, options) {
 }
 
 IScroll.prototype = {
-	version: '5.1.5',
+	version: '5.2.0',
 
 	_init: function () {
 		this._initEvents();
@@ -533,7 +533,7 @@ IScroll.prototype = {
 			}
 
 			if ( this.options.click ) {
-				utils.click(e);
+				utils.click(e, this.options);
 			}
 
 			this._execEvent('scrollCancel');
@@ -798,9 +798,7 @@ IScroll.prototype = {
 		eventType(window, 'orientationchange', this);
 		eventType(window, 'resize', this);
 
-		if ( this.options.click || this.options.clickPreventDefault ) {
-			eventType(this.wrapper, 'click', this, true);
-		}
+		eventType(this.wrapper, 'click', this, true);
 
 		if ( !this.options.disableMouse ) {
 			eventType(this.wrapper, 'mousedown', this);
@@ -926,7 +924,7 @@ IScroll.prototype = {
 				this._key(e);
 				break;
 			case 'click':
-				if ( !e._constructed || this.options.clickPreventDefault ) {
+				if ( !e._constructed && !utils.preventDefaultException(e.target, this.options.preventDefaultException) ) {
 					e.preventDefault();
 					e.stopPropagation();
 				}
