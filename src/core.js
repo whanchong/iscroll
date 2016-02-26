@@ -363,6 +363,7 @@ IScroll.prototype = {
 
 	disable: function () {
 		this.enabled = false;
+		this.initiated = false;
 	},
 
 	enable: function () {
