@@ -2,12 +2,18 @@
 
 ---
 
+## Version 5.2.1 - 2016-02-29
+
+### Fixes
+* Reset initiated when enabling or disabling iscroll.
+
+---
+
 ## Version 5.2.0 - 2016-02-23
 
 ### Fixes
 * Unified click handling, always listen to click, prevent on tap.
 * Removed `options.clickPreventDefault`
-
 
 ---
 
@@ -25,7 +31,6 @@
 
 ### Fixes
 * Added a guard for indicatorsMap
-
 
 ---
 

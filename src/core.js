@@ -368,6 +368,7 @@ IScroll.prototype = {
 
 	enable: function () {
 		this.enabled = true;
+		this.initiated = false;
 	},
 
 	refresh: function () {
