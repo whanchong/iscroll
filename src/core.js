@@ -157,7 +157,7 @@ IScroll.prototype = {
 			return;
 		}
 
-		if ( this.options.preventDefault ) {	// increases performance on Android? TODO: check!
+		if ( this.options.preventDefault && !utils.isBadAndroid && !utils.preventDefaultException(e.target, this.options.preventDefaultException) ) {	// increases performance on Android? TODO: check!
 			e.preventDefault();
 		}
 
@@ -283,7 +283,7 @@ IScroll.prototype = {
 		// we scrolled less than 10 pixels
 		if ( !this.moved ) {
 			if ( this.options.tap ) {
-				utils.tap(e, this.options.tap);
+				utils.tap(e, this.options);
 			}
 
 			if ( this.options.click ) {

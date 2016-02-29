@@ -216,12 +216,17 @@ var utils = (function () {
 		}
 	});
 
-	me.tap = function (e, eventName) {
-		var ev = document.createEvent('Event');
-		ev.initEvent(eventName, true, true);
-		ev.pageX = e.pageX;
-		ev.pageY = e.pageY;
-		e.target.dispatchEvent(ev);
+	me.tap = function (e, options) {
+		var target = e.target,
+			ev;
+
+		if ( !me.preventDefaultException(target, options.preventDefaultException) ) {
+			ev = document.createEvent('Event');
+			ev.initEvent(options.tap, true, true);
+			ev.pageX = e.pageX;
+			ev.pageY = e.pageY;
+			target.dispatchEvent(ev);
+		}
 	};
 
 	me.click = function (e, options) {
