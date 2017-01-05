@@ -1,4 +1,4 @@
-/*! iScroll v5.2.1 ~ (c) 2008-2016 Matteo Spinelli ~ http://cubiq.org/license */
+/*! iScroll v5.2.1 ~ (c) 2008-2017 Matteo Spinelli ~ http://cubiq.org/license */
 (function (window, document, Math) {
 var rAF = window.requestAnimationFrame	||
 	window.webkitRequestAnimationFrame	||
@@ -226,11 +226,11 @@ var utils = (function () {
 		e.target.dispatchEvent(ev);
 	};
 
-	me.click = function (e, options) {
+	me.click = function (e) {
 		var target = e.target,
 			ev;
 
-		if ( !me.preventDefaultException(target, options.preventDefaultException) ) {
+		if ( !(/(SELECT|INPUT|TEXTAREA)/i).test(target.tagName) ) {
 			ev = document.createEvent('MouseEvents');
 			ev.initMouseEvent('click', true, true, e.view, 1,
 				target.screenX, target.screenY, target.clientX, target.clientY,
@@ -324,6 +324,7 @@ function IScroll (el, options) {
 	this.directionX = 0;
 	this.directionY = 0;
 	this._events = {};
+	this.isScrollingByIndicator = false;
 
 // INSERT POINT: DEFAULTS
 
@@ -386,7 +387,7 @@ IScroll.prototype = {
 			}
 		}
 
-		if ( !this.enabled || (this.initiated && utils.eventType[e.type] !== this.initiated) ) {
+		if ( !this.enabled || this.isScrollingByIndicator || (this.initiated && utils.eventType[e.type] !== this.initiated) ) {
 			return;
 		}
 
@@ -430,7 +431,7 @@ IScroll.prototype = {
 	},
 
 	_move: function (e) {
-		if ( !this.enabled || utils.eventType[e.type] !== this.initiated ) {
+		if ( !this.enabled || this.isScrollingByIndicator || utils.eventType[e.type] !== this.initiated ) {
 			return;
 		}
 
@@ -533,7 +534,7 @@ IScroll.prototype = {
 	},
 
 	_end: function (e) {
-		if ( !this.enabled || utils.eventType[e.type] !== this.initiated ) {
+		if ( !this.enabled || this.isScrollingByIndicator || utils.eventType[e.type] !== this.initiated ) {
 			return;
 		}
 
@@ -570,7 +571,7 @@ IScroll.prototype = {
 			}
 
 			if ( this.options.click ) {
-				utils.click(e, this.options);
+				utils.click(e);
 			}
 
 			this._execEvent('scrollCancel');
@@ -879,7 +880,9 @@ IScroll.prototype = {
 		eventType(window, 'orientationchange', this);
 		eventType(window, 'resize', this);
 
-		eventType(this.wrapper, 'click', this, true);
+		if ( this.options.click ) {
+			eventType(this.wrapper, 'click', this, true);
+		}
 
 		if ( !this.options.disableMouse ) {
 			eventType(this.wrapper, 'mousedown', this);
@@ -1600,7 +1603,7 @@ IScroll.prototype = {
 				this._key(e);
 				break;
 			case 'click':
-				if ( !e._constructed && !utils.preventDefaultException(e.target, this.options.preventDefaultException) ) {
+				if ( !e._constructed ) {
 					e.preventDefault();
 					e.stopPropagation();
 				}
@@ -1746,15 +1749,14 @@ Indicator.prototype = {
 	_start: function (e) {
 		var point = e.touches ? e.touches[0] : e;
 
-		e.preventDefault();
-		e.stopPropagation();
-
 		this.transitionTime();
 
 		this.initiated = true;
 		this.moved = false;
 		this.lastPointX	= point.pageX;
 		this.lastPointY	= point.pageY;
+
+		this.scroller.isScrollingByIndicator = true;
 
 		this.startTime	= utils.getTime();
 
@@ -1806,7 +1808,6 @@ Indicator.prototype = {
 // INSERT POINT: indicator._move
 
 		e.preventDefault();
-		e.stopPropagation();
 	},
 
 	_end: function (e) {
@@ -1815,9 +1816,7 @@ Indicator.prototype = {
 		}
 
 		this.initiated = false;
-
-		e.preventDefault();
-		e.stopPropagation();
+		this.scroller.isScrollingByIndicator = false;
 
 		utils.removeEvent(window, 'touchmove', this);
 		utils.removeEvent(window, utils.prefixPointerEvent('pointermove'), this);
