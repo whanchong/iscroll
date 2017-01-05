@@ -63,6 +63,7 @@ function IScroll (el, options) {
 	this.directionX = 0;
 	this.directionY = 0;
 	this._events = {};
+	this.isScrollingByIndicator = false;
 
 // INSERT POINT: DEFAULTS
 
@@ -109,7 +110,7 @@ IScroll.prototype = {
 			}
 		}
 
-		if ( !this.enabled || (this.initiated && utils.eventType[e.type] !== this.initiated) ) {
+		if ( !this.enabled || this.isScrollingByIndicator || (this.initiated && utils.eventType[e.type] !== this.initiated) ) {
 			return;
 		}
 
@@ -153,7 +154,7 @@ IScroll.prototype = {
 	},
 
 	_move: function (e) {
-		if ( !this.enabled || utils.eventType[e.type] !== this.initiated ) {
+		if ( !this.enabled || this.isScrollingByIndicator || utils.eventType[e.type] !== this.initiated ) {
 			return;
 		}
 
@@ -250,7 +251,7 @@ IScroll.prototype = {
 	},
 
 	_end: function (e) {
-		if ( !this.enabled || utils.eventType[e.type] !== this.initiated ) {
+		if ( !this.enabled || this.isScrollingByIndicator || utils.eventType[e.type] !== this.initiated ) {
 			return;
 		}
 
