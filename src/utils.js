@@ -224,11 +224,11 @@ var utils = (function () {
 		e.target.dispatchEvent(ev);
 	};
 
-	me.click = function (e, options) {
+	me.click = function (e) {
 		var target = e.target,
 			ev;
 
-		if ( !me.preventDefaultException(target, options.preventDefaultException) ) {
+		if ( !(/(SELECT|INPUT|TEXTAREA)/i).test(target.tagName) ) {
 			ev = document.createEvent('MouseEvents');
 			ev.initMouseEvent('click', true, true, e.view, 1,
 				target.screenX, target.screenY, target.clientX, target.clientY,
